@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Voting DApp</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style type="text/css">
+        .newClass {
+            padding: 20px 0 10px;
+            margin: 0;
+            background-image: linear-gradient(45deg, #020031 0%, #6d3353 100%);
+            color: #fff;
+            line-height: 26px;
+        }
+
+        #page {
+            position: absolute;
+            top: 71px;
+            width: 100%;
+            height: calc(100% - 60px);
+            display: flex;
+            padding-top: 10px;
+        }
+
+        .menu {
+            flex: 1;
+            list-style: none;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-size: 24px;
+            color: #fff;
+            padding-left: 40px;
+            cursor: pointer;
+        }
+
+        .menu li {
+            height: 50px;
+            border-bottom: 1px solid #ccc;
+            vertical-align: middle;
+            background: #0088CC;
+            border-radius: 10px;
+        }
+
+        .content {
+            flex: 5;
+            /* display: flex;
+            justify-content: center;
+            align-items: center; */
+        }
+
+        table th,
+        td {
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body class="row" style="width: 100%;margin-left: 0;">
+    <h3 class="text-center banner newClass">西科大赌币系统
+        <span class="glyphicon glyphicon-question-sign" style="font-size: 20px;color: #a1a1a1"></span>
+    </h3>
+    <div id='page'>
+        <ul class='menu'>
+            <li onclick="changeJJ()">简介</li>
+            <li onclick="changeZJ()">购游戏币</li>
+            <li onclick="changeGR()">进行游戏</li>
+        </ul>
+        <div class='content'>
+          <p style="text-align: center;width: 40%;margin-left: 40%;transform: translateX(-50%);font-size: 24px"> 
+            小组成员： 郭海富，唐浩博
+            </p> 
+        <p style="text-align: center;width: 40%;margin-left: 40%;transform: translateX(-50%);font-size: 24px"> 
+            项目简介：通过本系统用以太坊购买游戏币，与庄家进行游戏挑战，如果开出大玩家赢否者庄家赢；快来挑战吧！
+         </p> 
+        </div>
+    </div>
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+</body>
+<script>
+    function changeJJ() {
+        document.querySelector('.content').innerHTML =
+            `
+            <p style="text-align: center;width: 40%;margin-left: 40%;transform: translateX(-50%);font-size: 24px"> 
+            小组成员： 郭海富，唐浩博
+            </p> 
+             <p style="text-align: center;width: 40%;margin-left: 40%;transform: translateX(-50%);font-size: 24px"> 
+            项目简介：通过本系统用以太坊购买游戏币，与庄家进行游戏挑战，如果开出大玩家赢否者庄家赢；快来挑战吧！
+            </p> 
+        `;
+    }
+
+    function changeZJ() {
+        document.querySelector('.content').innerHTML =
+            `<div class="col-sm-offset-1 col-sm-5">
+                <h4>庄家信息</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>游戏币项</th>
+                            <th>值</th>
+                        </tr>
+                        <tr>
+                            <td>庄家游戏币</td>
+                            <td id="tokens-total"></td>
+                        </tr>
+                        <tr>
+                            <td>庄家输赢游戏币</td>
+                            <td id="tokens-sold"></td>
+                        </tr>
+                        <tr>
+                            <td>游戏币单价</td>
+                            <td id="token-cost"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row margin-bottom-3">
+                    <div class="col-sm-offset-1 col-sm-5" style="margin: 0;">
+                        <div class="col-sm-12 form" style="padding: 0;">
+                            <h4>购买游戏币</h4>
+                            <div class="alert alert-success" role="alert" id="buy-msg" style="display: none;">购买成功，已更新游戏币数据</div>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="buy" placeholder="请输入购买游戏币数量">
+                                <span class="input-group-addon btn btn-primary" id="voter_buyTokens">确认购买</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                App.init();
+    }
+
+    function changeGR() {
+        document.querySelector('.content').innerHTML =
+            `<div class="col-sm-offset-1 col-sm-5">
+                <h4>个人信息</h4>
+                <div class="table-responsive">
+                    <table class="table table-responsive">
+                        <tr>
+                            <th>个人选项</th>
+                            <th>值</th>
+                        </tr>
+                        <tr>
+                            <td>个人ETH</td>
+                            <td id="contract-balance"></td>
+                        </tr>
+                        <tr>
+                            <td>个人游戏币</td>
+                            <td id="user-count"></td>
+                        </tr>
+                        <tr>
+                            <td>个人输赢</td>
+                            <td id="user-winlose"></td>
+                        </tr>
+                    </table>
+                </div>
+                <hr>
+            </div>
+            <div class="row margin-bottom-3">
+                <div class="col-sm-6 form">
+                    <h4>参与游戏</h4>
+                    <div class="alert alert-success" role="alert" id="msg" style="display: none;">投票成功，已更新得票总数</div>
+                    <input type="text" id="vote-tokens" style="width: 200px;" class="form-control" placeholder="投注游戏币数量" />
+                    <br>
+                    <a href="#" id="voter-send" class="btn btn-primary">开始游戏</a>
+                    <div id='message' style="color:red;font-size=25px;"></div>
+                </div>
+            </div>`;
+            App.init();
+    }
+</script>
+
+</html>
